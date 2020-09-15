@@ -5,11 +5,11 @@ aPackageInfo = [
 	:developer = "Mahmoud Fayed",
 	:email = "msfclipper@yahoo.com",
 	:license = "MIT License",
-	:version = "1.0.0",
+	:version = "1.0.1",
 	:ringversion = "1.13",
 	:versions = 	[
 		[
-			:version = "1.0.0",
+			:version = "1.0.1",
 			:branch = "master"
 		]
 	],
@@ -33,7 +33,7 @@ aPackageInfo = [
 		"applications/pong2/0.png",
 		"applications/pong2/1.png",
 		"applications/pong2/2.png",
-		"applications/pong2/Assets/Flowing Rocks.ogg",
+		"applications/pong2/Assets/FRocks.ogg",
 		"applications/pong2/Assets/hurt2.ogg",
 		"applications/pong2/Assets/musicOff.png",
 		"applications/pong2/Assets/musicOn.png",

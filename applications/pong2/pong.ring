@@ -29,7 +29,7 @@ UnloadImage(musicOffImage)
 InitAudioDevice()
 
 hitSound = LoadSound("assets/hurt2.ogg")
-music = LoadMusicStream("assets/Flowing Rocks.ogg")
+music = LoadMusicStream("assets/FRocks.ogg")
 
 PlayMusicStream(music)
 
