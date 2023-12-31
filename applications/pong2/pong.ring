@@ -16,8 +16,8 @@ Start		= False
 InitWindow(screenWidth, screenHeight, "Pong Ring")
 
 # Load game textures
-MusicOnImage 	= LoadImage("assets/musicOn.png")
-MusicOffImage 	= LoadImage("assets/musicOff.png")
+MusicOnImage 	= LoadImage("Assets/musicOn.png")
+MusicOffImage 	= LoadImage("Assets/musicOff.png")
 
 MusicOnTex 	= LoadTextureFromImage(musicOnImage)
 MusicOffTex 	= LoadTextureFromImage(musicOffImage)
@@ -28,8 +28,8 @@ UnloadImage(musicOffImage)
 # Load game sounds
 InitAudioDevice()
 
-hitSound = LoadSound("assets/hurt2.ogg")
-music = LoadMusicStream("assets/FRocks.ogg")
+hitSound = LoadSound("Assets/hurt2.ogg")
+music = LoadMusicStream("Assets/FRocks.ogg")
 
 PlayMusicStream(music)
 
@@ -105,6 +105,15 @@ while !WindowShouldClose()
 
 end
 
+unloadSound(hitSound)
+unloadMusicStream(music)
+
+unloadTexture(MusicOnTex)
+unloadTexture(MusicOffTex)
+
+startScene.UnloadTextures()
+
+CloseAudioDevice()
 CloseWindow()
 
 # Function to handle game music and sounds
@@ -134,7 +143,7 @@ func musicHandler
 		UpdateMusicStream(music)
 	ok
 
-# Function to check if the user prees R key to restart the game
+# Function to check if the user press R key to restart the game
 func listenForRestart
 	DrawText("PRESS R TO RESTART", screenWidth / 2 - 130, 60, 25, GRAY)
 
@@ -162,10 +171,10 @@ func restart
 class StartScene
 	isDone = False MARGIN = 30
 	images = [
-		"assets/tileW.png",
-		"assets/tileS.png",
-		"assets/tileUp.png",
-		"assets/tileDown.png"
+		"Assets/tileW.png",
+		"Assets/tileS.png",
+		"Assets/tileUp.png",
+		"Assets/tileDown.png"
 		]
 
 	positions = [
@@ -175,7 +184,21 @@ class StartScene
 		:tileDown = new Vector2(screenWidth * 0.75 + 68, screenHeight / 2 + MARGIN)
 		]
 
-	func init
+	textures = []
+	loadTextures()
+
+	func loadTextures
+		for image in images
+			tileW = LoadImage(image)
+			ImageResize(tileW, 64, 64)
+			textures + LoadTextureFromImage(tileW)
+			UnloadImage(tileW)
+		next
+
+	func unloadTextures
+		for texture in textures
+			UnloadTexture(texture)
+		next
 
 	func draw
 		ClearBackground(BLACK)
@@ -196,30 +219,33 @@ class StartScene
 		return isDone
 
 	func drawControls
-		i = 1
-		for image in images
-			tileW = LoadImage(image)
-			ImageResize(tileW, 64, 64)
-			texture = LoadTextureFromImage(tileW)
+		for i=1 to len(images)
+			texture = textures[i]
 			position = positions[i][2]
 			DrawTexture(texture, position.x, position.y, WHITE)
-			UnloadImage(tileW)
-			i++
 		next
+
 # Class to draw playing area
 class Arena
+
 	MARGIN = 40
+
+	func init
+		return self
 
 	func draw
 		DrawRectangle(20, 20, screenWidth - MARGIN,
 			 screenHeight - MARGIN, BLACK)
 
 class Player
+
 	position  w h speed = 4 score = 0 keyUp keyDown Type = 1 
+
 	func init
 		position = new Vector2(100, screenHeight / 2 - 50)
 		w = 30 h = 100
 		return self
+
 	func draw
 		DrawRectangle(position.x, position.y, w, h, WHITE)
 		
@@ -248,6 +274,7 @@ class Player
 		keyDown = key
 
 class Ball
+
 	position radius = 20  velocity = new Vector2(6, 6)
 
 	func init
@@ -255,6 +282,7 @@ class Ball
 		DrawCircleV(position, radius, BLUE)
 		rand = random(1)
 		if rand = 0 velocity.x = -velocity.x ok
+		return self
 
 	func draw
 		DrawCircleV(position, radius, BLUE)
